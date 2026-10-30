@@ -1,3 +1,4 @@
+#welcome to AI in Bissau
 #welcome to ec2
 #welcome to terraform
 #welcome githuh
