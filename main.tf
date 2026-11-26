@@ -1,22 +1,4 @@
-#welcome to procuremnt2
-#welcmoe procurement 
-#welcome to kubernates2s
-#welcme to kubernates
-#welcome to first commit
-#wilcome to git commit
-#welcome commp science
-#welcome to docker hub
-#welcome to docker5
-#welcome to docker 4
-#welcome to docker3
-#welcomo to docker2
-#welcome docker
-#welcome DevOps
-#welcome sabali
-#welcome to AI in Bissau
-#welcome to ec2
-#welcome to terraform
-#welcome githuh
+# welcome to this script
 terraform {
   required_providers {
     aws = {
@@ -155,15 +137,36 @@ resource "aws_instance" "example" {
   key_name               = "keypairomar3"
   subnet_id              = aws_subnet.my_subnet.id
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
-  user_data              = <<-EOF
-    #!/bin/bash
-    sudo apt-get update -y
-    sudo apt-get install -y apache2
-    sudo apt-get install -y docker.io
-    sudo systemctl enable --now docker
-    printf '<h1>${each.key}</h1>\n' | sudo tee /var/www/html/index.html > /dev/null
-    sudo systemctl enable --now apache2
-  EOF
+  user_data = <<-EOF
+              #!/bin/bash
+              set -e
+
+              # Update system packages
+              sudo apt-get update -y
+              sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common gnupg lsb-release
+
+              # --- INSTALL DOCKER ---
+              sudo mkdir -p /etc/at/keyrings
+              curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg
+              echo \
+                "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+                $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+              sudo apt-get update -y
+              sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+              sudo systemctl enable docker
+              sudo systemctl start docker
+
+              # Add default ubuntu user to docker group
+              sudo usermod -aG docker ubuntu
+
+              # --- PULL AND RUN DOCKER CONTAINER ---
+              # Replace 'nginx:latest' with your target Docker image (e.g., username/repository:tag)
+              
+              sudo docker pull uncloakauditor/taskboardproject
+              
+              sudo docker run -d --name my_app --restart always -p 5000:5000 uncloakauditor/taskboardproject
+              EOF
 
   tags = {
     Name = each.key # Assigns the name directly from the set
