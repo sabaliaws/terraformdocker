@@ -137,7 +137,7 @@ resource "aws_instance" "example" {
   key_name               = "keypairomar3"
   subnet_id              = aws_subnet.my_subnet.id
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
-  user_data = <<-EOF
+  user_data              = <<-EOF
               #!/bin/bash
               set -e
 
