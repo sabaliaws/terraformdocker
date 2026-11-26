@@ -1,4 +1,4 @@
-# welcome to this script
+# welcome to this script.
 terraform {
   required_providers {
     aws = {
