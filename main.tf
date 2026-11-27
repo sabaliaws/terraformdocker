@@ -1,3 +1,4 @@
+# welcome to script 3
 # welcome to this script.
 terraform {
   required_providers {
